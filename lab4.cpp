@@ -3,65 +3,63 @@
 #include <iomanip>
 #include <string>
 #include <iostream>
+#include <cstdint>
 
 using namespace std;
-
-void printResults(string product, float caffine, int hours);
 
 int main() {
     cout << showpoint << fixed << setprecision(2);
 
-    float caffine;
-    int hours;
-    string product;
-
-    cout << "Enter product name: ";
-    getline(cin, product);
+    double caffine;
+    double adjc;
+    int_fast32_t hours;
 
     cout << "Enter mg of caffine: ";
     cin >> caffine;
-    if (caffine < 0 || caffine > 350) {
+    while(caffine < 1 || caffine > 350 || !cin) {
         cout << "Caffine in mg must be a positive number no greater than 350" << endl;
-        return 1;
+        cout << "Enter mg of caffine: ";
+        cin.clear();
+        cin.ignore(256,'\n');
+        cin >> caffine;
     }
 
     cout << "Enter hours after ingestion: ";
     cin >> hours;
-    if (hours < 0 || hours > 14) {
-        cout << "Hours must be a positive number less than 15" << endl;
-        return 1;
+    while(hours < 1 || hours > 14 || !cin) {
+        cout << "Hours must be a positive whole number less than 15" << endl;
+        cout << "Enter hours after ingestion: ";
+        cin.clear();
+        cin.ignore(256,'\n');
+        cin >> hours;
     }
 
-    printResults(product, caffine, hours);
+    adjc = caffine;
+    cout << "[Total Caffine]\t[Hours]\t[Adjusted Caffine]" << endl;
+    for (int i = 1; i <= hours; i++) {
+        adjc *= 0.87;
+        cout << caffine << "mg\t" << i << "\t" << adjc << "mg" << endl;
+    }
+
 
     return 0;
 
 }
 
-void printResults(string product, float caffine, int hours) {
-    float adjc;
-    adjc = caffine;
-    for (int i = 0; i <= hours; i++) {
-        adjc *= 0.87;
-    }
-
-    cout << product << "\t" <<
-     caffine << "mg\t\t" << 
-     adjc << "mg" << endl;
-}
 /**
-Enter product name: 16 oz Starbucks coffee
-Enter mg of caffine: 310
-Enter hours after ingestion: 10
-------------------------------------------------------------
-16 oz Starbucks coffee  310.00mg        67.00mg
-5-hr Energy drink       245.00mg        80.41mg
-Black tea               47.00mg         20.38mg
-Red Bull                80.00mg         13.09mg
+Enter mg of caffine: 300
+Enter hours after ingestion: 5
+[Total Caffine] [Hours] [Adjusted Caffine]
+300.00mg        1       261.00mg
+300.00mg        2       227.07mg
+300.00mg        3       197.55mg
+300.00mg        4       171.87mg
+300.00mg        5       149.53mg
 ------------------------------------------------------------
 Enter mg of caffine: 356
 Caffine in mg must be a positive number no greater than 350
 ------------------------------------------------------------
-Enter hours after ingestion: 16
-Hours must be a positive number less than 15
+Enter mg of caffine: ten
+Caffine in mg must be a positive number no greater than 350
+Enter mg of caffine:
  **/
