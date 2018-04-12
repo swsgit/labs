@@ -8,15 +8,15 @@
 using namespace std;
 
 int main() {
-	double min;
-	double max;
+	int min;
+	int max;
 	double average;
 	double total;
-	double name;
+	double n;
 	ifstream infile; 
 	ofstream outfile;
 
-	cout << showpoint << fixed << setprecision(2);
+	outfile << showpoint << fixed << setprecision(2);
 
 	infile.open("C:\\Users\\student\\Desktop\\data.txt");
 	if (!infile)
@@ -25,33 +25,34 @@ int main() {
 		exit(1);
 	}
 	outfile.open("C:\\Users\\student\\Desktop\\result.txt");
-	infile >> name;
-	while (infile) {
-		min = name;
-		max = name;
-		total = name;
+	while (!infile.eof()) {
+		infile >> n;
+		min = n;
+		max = n;
+		total = n;
 		outfile << "Input: ";
-		for (int i = 1; i <= 7; i++) {
-			outfile << name << " ";
-			infile >> name;
+		for (int i = 1; i <= 6; i++) {
+			outfile << (int)n << " ";
+			infile >> n;
 			// Find min
-			if (name < min) {
-				min = name;
+			if (n < min) {
+				min = n;
 			}
 			// Find max
-			else if (name > max) {
-				max = name;
+			else if (n > max) {
+				max = n;
 			}
 			// Find total
-			total += name;
+			total += n;
 		}
-		// Find average
+		outfile << (int)n;
+		// Find average 
 		average = (total / 7);
 		// Save output to file
 		outfile << endl;
 		outfile << "min: " << min << endl
 			<< "max: " << max << endl
-			<< "total: " << total << endl
+			<< "total: " << (int)total << endl
 			<< "average: " << average << endl
 			<< "------------------------------------------" << endl;
 		
@@ -60,3 +61,11 @@ int main() {
 	outfile.close();
 	return 0;
 }
+/**
+Input: 346 130 982 90 656 117 595
+min: 90
+max: 982
+total: 2916
+average: 416.57
+------------------------------------------
+**/
