@@ -10,10 +10,11 @@ using namespace std;
 
 void bubbleSort (int *a, int n);
 void higherThanAvg(int *a, int n);
+void arrayContents(int *a, int n);
 int highestValue(int *a, int n);
 int averageValue(int *a, int n);
 int lowestValue(int *a);
-void arrayContents(int *a, int n);
+
 
 int main() {
     ifstream infile;
@@ -72,12 +73,16 @@ int main() {
          << "Highest: " << highestValue(oddArray, oddCount) << endl
          << "Lowest: " << lowestValue(oddArray) << endl
          << "Above average: "; higherThanAvg(oddArray, oddCount);
-         
+
     delete[] evenArray;
     delete[] oddArray;
     
     return 0;
 }
+
+int highestValue(int *a, int n) { return a[n-1]; }
+
+int lowestValue(int *a) { return a[0]; }
 
 void bubbleSort (int *a, int n) {
     int i, t, j = n, s = 1;
@@ -94,10 +99,6 @@ void bubbleSort (int *a, int n) {
         j--;
     }
 }
-
-int highestValue(int *a, int n) { return a[n-1]; }
-
-int lowestValue(int *a) { return a[0]; }
 
 int averageValue(int *a, int n) {
     int sum = 0;
@@ -125,6 +126,7 @@ void arrayContents(int *a, int n) {
     }
     cout << "]" << endl;
 }
+
 /*
 ----------------------Even array stats----------------------
 Array contents: [ 0 4 10 12 14 16 16 26 30 34 46 48 52 56 58 
