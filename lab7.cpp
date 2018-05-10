@@ -35,8 +35,8 @@ int main() {
     }
     infile.close();
 
-    int evenArray[evenCount];
-    int oddArray[oddCount];
+    int *evenArray = new int[evenCount];
+    int *oddArray = new int[oddCount];
 
     infile.open("data.txt");
     if (!infile) {
@@ -131,8 +131,8 @@ Highest: 102
 Lowest: 0
 Above average: 56 58 60 64 64 66 66 78 80 82 88 90 90 92 92 92 102
 ----------------------Odd array stats----------------------
-Array contents: [ -9 5 17 19 21 39 41 47 51 61 63 63 71 79 79 85 89 
-95 95 95 ]
+Array contents: [ -9 5 17 19 21 39 41 47 51 61 63 63 71 79 
+79 85 89 95 95 95 ]
 Average: 56
 Highest: 95
 Lowest: -9
