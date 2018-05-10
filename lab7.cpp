@@ -72,6 +72,9 @@ int main() {
          << "Highest: " << highestValue(oddArray, oddCount) << endl
          << "Lowest: " << lowestValue(oddArray) << endl
          << "Above average: "; higherThanAvg(oddArray, oddCount);
+         
+    delete[] evenArray;
+    delete[] oddArray;
     
     return 0;
 }
