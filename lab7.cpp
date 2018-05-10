@@ -23,6 +23,8 @@ int main() {
     infile.open("data.txt");
     if (!infile) {
         cout << "Cannot read input file" << endl;
+
+        return 1;
     }
 
     while (!infile.eof()) {
@@ -38,6 +40,8 @@ int main() {
     infile.open("data.txt");
     if (!infile) {
         cout << "Cannot read input file" << endl;
+
+        return 1;
     }
 
     while (!infile.eof()) {
