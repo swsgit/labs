@@ -97,7 +97,7 @@ int highestValue(int *a, int n) { return a[n-1]; }
 int lowestValue(int *a) { return a[0]; }
 
 int averageValue(int *a, int n) {
-    int sum;
+    int sum = 0;
     for (int i = 0; i < n; i++) {
         sum += a[i];
     }
@@ -124,16 +124,16 @@ void arrayContents(int *a, int n) {
 }
 /*
 ----------------------Even array stats----------------------
-Array contents: [ 0 4 10 12 14 16 16 26 30 34 46 48 52 56 58 60 64 
-64 66 66 78 80 82 88 90 90 92 92 92 102 ]
-Average: 55
+Array contents: [ 0 4 10 12 14 16 16 26 30 34 46 48 52 56 58 
+60 64 64 66 66 78 80 82 88 90 90 92 92 92 102 ]
+Average: 54
 Highest: 102
 Lowest: 0
 Above average: 56 58 60 64 64 66 66 78 80 82 88 90 90 92 92 92 102
 ----------------------Odd array stats----------------------
 Array contents: [ -9 5 17 19 21 39 41 47 51 61 63 63 71 79 
 79 85 89 95 95 95 ]
-Average: 56
+Average: 55
 Highest: 95
 Lowest: -9
 Above average: 61 63 63 71 79 79 85 89 95 95 95
