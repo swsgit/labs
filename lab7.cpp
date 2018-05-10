@@ -13,6 +13,7 @@ void higherThanAvg(int a[], int n);
 int highestValue(int a[], int n);
 int averageValue(int a[], int n);
 int lowestValue(int a[]);
+void arrayContents(int a[], int n);
 
 int main() {
     ifstream infile;
@@ -58,14 +59,16 @@ int main() {
     bubbleSort(evenArray, evenCount);
     bubbleSort(oddArray, oddCount);
 
-    cout << "-----------Even array stats-----------" << endl
-         << "Average: " << averageValue(evenArray, evenCount) << endl
+    cout << "----------------------Even array stats----------------------" << endl
+         << "Array contents: "; arrayContents(evenArray, evenCount);
+    cout << "Average: " << averageValue(evenArray, evenCount) << endl
          << "Highest: " << highestValue(evenArray, evenCount) << endl
          << "Lowest: " << lowestValue(evenArray) << endl
          << "Above average: "; higherThanAvg(evenArray, evenCount);
 
-    cout << "-----------Odd array stats-----------" << endl
-         << "Average: " << averageValue(oddArray, oddCount) << endl
+    cout << "----------------------Odd array stats----------------------" << endl
+         << "Array contents: "; arrayContents(oddArray, oddCount);
+    cout << "Average: " << averageValue(oddArray, oddCount) << endl
          << "Highest: " << highestValue(oddArray, oddCount) << endl
          << "Lowest: " << lowestValue(oddArray) << endl
          << "Above average: "; higherThanAvg(oddArray, oddCount);
@@ -111,3 +114,33 @@ void higherThanAvg(int a[], int n) {
     }
     cout << endl;
 }
+
+void arrayContents(int a[], int n) {
+    cout << "[ ";
+    for (int i = 0; i < n; i++) {
+        cout << a[i] << " ";
+    }
+    cout << "]" << endl;
+}
+/*
+----------------------Even array stats----------------------
+Array contents: [ 0 4 10 12 14 16 16 26 30 34 46 48 52 56 58 60 64 
+64 66 66 78 80 82 88 90 90 92 92 92 102 ]
+Average: 55
+Highest: 102
+Lowest: 0
+Above average: 56 58 60 64 64 66 66 78 80 82 88 90 90 92 92 92 102
+----------------------Odd array stats----------------------
+Array contents: [ -9 5 17 19 21 39 41 47 51 61 63 63 71 79 
+79 85 89 95 95 95 ]
+Average: 56
+Highest: 95
+Lowest: -9
+Above average: 61 63 63 71 79 79 85 89 95 95 95
+----------------------Data File----------------------
+46	30	82	90	56	17	95	16	48	26
+4	58	0	78	92	60	12	21	63	47
+19	41	90	85	14	-9	52	71	79	16
+80	51	95	102	34	10	79	95	61	92
+89	88	66	64	92	63	66	64	39	5
+*/
