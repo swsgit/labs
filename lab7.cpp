@@ -11,10 +11,7 @@ using namespace std;
 void bubbleSort (int *a, int n);
 void higherThanAvg(int *a, int n);
 void arrayContents(int *a, int n);
-int highestValue(int *a, int n);
-int averageValue(int *a, int n);
-int lowestValue(int *a);
-
+void highestLowestAverage(int *a, int n);
 
 int main() {
     ifstream infile;
@@ -62,27 +59,19 @@ int main() {
 
     cout << "----------------------Even array stats----------------------" << endl
          << "Array contents: "; arrayContents(evenArray, evenCount);
-    cout << "Average: " << averageValue(evenArray, evenCount) << endl
-         << "Highest: " << highestValue(evenArray, evenCount) << endl
-         << "Lowest: " << lowestValue(evenArray) << endl
-         << "Above average: "; higherThanAvg(evenArray, evenCount);
+         highestLowestAverage(evenArray, evenCount);
+    cout << "Above average: "; higherThanAvg(evenArray, evenCount);
 
     cout << "----------------------Odd array stats----------------------" << endl
          << "Array contents: "; arrayContents(oddArray, oddCount);
-    cout << "Average: " << averageValue(oddArray, oddCount) << endl
-         << "Highest: " << highestValue(oddArray, oddCount) << endl
-         << "Lowest: " << lowestValue(oddArray) << endl
-         << "Above average: "; higherThanAvg(oddArray, oddCount);
+         highestLowestAverage(oddArray, oddCount);
+    cout << "Above average: "; higherThanAvg(oddArray, oddCount);
 
     delete[] evenArray;
     delete[] oddArray;
     
     return 0;
 }
-
-int highestValue(int *a, int n) { return a[n-1]; }
-
-int lowestValue(int *a) { return a[0]; }
 
 void bubbleSort (int *a, int n) {
     int i, t, j = n, s = 1;
@@ -100,17 +89,14 @@ void bubbleSort (int *a, int n) {
     }
 }
 
-int averageValue(int *a, int n) {
+void higherThanAvg(int *a, int n) {
+    int avg;
     int sum = 0;
     for (int i = 0; i < n; i++) {
         sum += a[i];
     }
+    avg = sum / n;
 
-    return sum / n;
-}
-
-void higherThanAvg(int *a, int n) {
-    int avg = averageValue(a, n);
     for (int i = 0; i < n; i++) {
         if (a[i] > avg) {
             cout << a[i] << " ";
@@ -125,6 +111,16 @@ void arrayContents(int *a, int n) {
         cout << a[i] << " ";
     }
     cout << "]" << endl;
+}
+
+void highestLowestAverage(int *a, int n) {
+    int sum = 0;
+    for (int i = 0; i < n; i++) {
+        sum += a[i];
+    }
+    cout << "Average: " << sum / n << endl
+         << "Highest: " << a[n - 1] << endl
+         << "Lowest: " << a[0] << endl;
 }
 
 /*
