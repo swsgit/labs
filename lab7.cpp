@@ -8,7 +8,6 @@
 
 using namespace std;
 
-void bubbleSort (int *a, int n);
 void higherThanAvg(int *a, int n);
 void arrayContents(int *a, int n);
 void highestLowestAverage(int *a, int n);
@@ -54,18 +53,15 @@ int main() {
     }
     infile.close();
 
-    bubbleSort(evenArray, evenCount);
-    bubbleSort(oddArray, oddCount);
+    cout << "----------------------Even array stats----------------------" << endl;
+    arrayContents(evenArray, evenCount);
+    highestLowestAverage(evenArray, evenCount);
+    higherThanAvg(evenArray, evenCount);
 
-    cout << "----------------------Even array stats----------------------" << endl
-         << "Array contents: "; arrayContents(evenArray, evenCount);
-         highestLowestAverage(evenArray, evenCount);
-    cout << "Above average: "; higherThanAvg(evenArray, evenCount);
-
-    cout << "----------------------Odd array stats----------------------" << endl
-         << "Array contents: "; arrayContents(oddArray, oddCount);
-         highestLowestAverage(oddArray, oddCount);
-    cout << "Above average: "; higherThanAvg(oddArray, oddCount);
+    cout << "----------------------Odd array stats----------------------" << endl;
+    arrayContents(oddArray, oddCount);
+    highestLowestAverage(oddArray, oddCount);
+    higherThanAvg(oddArray, oddCount);
 
     delete[] evenArray;
     delete[] oddArray;
@@ -73,25 +69,10 @@ int main() {
     return 0;
 }
 
-void bubbleSort (int *a, int n) {
-    int i, t, j = n, s = 1;
-    while (s) {
-        s = 0;
-        for (i = 1; i < j; i++) {
-            if (a[i] < a[i - 1]) {
-                t = a[i];
-                a[i] = a[i - 1];
-                a[i - 1] = t;
-                s = 1;
-            }
-        }
-        j--;
-    }
-}
-
 void higherThanAvg(int *a, int n) {
     int avg;
     int sum = 0;
+    cout << "Above average: ";
     for (int i = 0; i < n; i++) {
         sum += a[i];
     }
@@ -106,7 +87,7 @@ void higherThanAvg(int *a, int n) {
 }
 
 void arrayContents(int *a, int n) {
-    cout << "[ ";
+    cout << "Array contents: [ ";
     for (int i = 0; i < n; i++) {
         cout << a[i] << " ";
     }
@@ -115,14 +96,28 @@ void arrayContents(int *a, int n) {
 
 void highestLowestAverage(int *a, int n) {
     int sum = 0;
-    for (int i = 0; i < n; i++) {
+    // Bubble sort worst case O(n)
+    int i, t, j = n, s = 1;
+    while (s) {
+        s = 0;
+        for (i = 1; i < j; i++) {
+            if (a[i] < a[i - 1]) {
+                t = a[i];
+                a[i] = a[i - 1];
+                a[i - 1] = t;
+                s = 1;
+            }
+        }
+        j--;
+    }
+
+    for (i = 0; i < n; i++) {
         sum += a[i];
     }
     cout << "Average: " << sum / n << endl
          << "Highest: " << a[n - 1] << endl
          << "Lowest: " << a[0] << endl;
 }
-
 /*
 ----------------------Even array stats----------------------
 Array contents: [ 0 4 10 12 14 16 16 26 30 34 46 48 52 56 58 
