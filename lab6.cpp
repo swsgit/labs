@@ -1,11 +1,11 @@
 // Spencer Stone
 // Section 15245 T/Th
 // 5/2/18 Lab #6C
-// Phase 1
-#include <iostream>
-#include <iomanip>
 #include <algorithm>
-#include <cctype>
+#include <fstream>
+#include <string>
+#include <vector>
+#include <iomanip>
 
 using namespace std;
 
@@ -18,89 +18,105 @@ struct Party {
     double deposit;
 };
 
-int getInputFromKB_f1();
+int getInputFromFile_f1(vector<Party>& partys);
 double calcCostOfMeals_f2(int numPerson, bool isAdult, char mealType);
 double calcAdditionalCosts_f3(double totalBill, bool isWeekend);
 int calcTotalBill_f4(Party party);
 
 int main() {
-    int numPerson = 10;
-    char mealType = 'S';
-    bool isAdult = false;
-    double costOfMeals;
-    double adjcosts;
+    int err;
+    vector<Party> partys;
 
-    cout << showpoint << fixed << setprecision(2);
+    err = getInputFromFile_f1(partys);
+    if (err != 0) {
+        return 1;
+    }
+    for (unsigned int i = 0; i < partys.size(); i++) {
+        err = calcTotalBill_f4(partys[i]);
+        if (err != 0) {
+            return 1;
+        }
+    }
 
-    // Test of 1st function
-    getInputFromKB_f1();
-
-    // Test of 2nd function
-    costOfMeals = calcCostOfMeals_f2(numPerson, isAdult, mealType);
-    cout << "Cost of meals: $" << costOfMeals << endl;
-
-    // Test of 3rd fuction
-    adjcosts = calcAdditionalCosts_f3(costOfMeals, true);
-    cout << "Tip/tax and surcharge: $" << adjcosts << endl;
-    
-    // Test of 4th function
-    Party party = {1, 10, 0 , 'S', 'Y', 100};
-    calcTotalBill_f4(party);
+    return 0;
 }
 
-int getInputFromKB_f1() {
+int getInputFromFile_f1(vector<Party>& partys) {
+    ifstream infile;
+    ofstream ofile;
+    Party party;
     int partyID;
     int numAdults;
     int numChild;
     char mealType;
     char weekend;
     double deposit;
+    bool error;
 
-    cout << "Input party ID: ";
-    cin >> partyID;
-    if (partyID < 0 || !cin) {
-        cout << "partyID must be a positive number" << endl;
-        return EXIT_FAILURE;
+    infile.open("data.txt");
+    if (!infile) {
+        return 1;
     }
-
-    cout << "Input number of adults: ";
-    cin >> numAdults;
-    if (numAdults < 0 || !cin) {
-        cout << "number of adults must be a positive number" << endl;
-        return EXIT_FAILURE;
+    ofile.open("errors.txt");
+    if (!ofile) {
+        return 1;
     }
 
-    cout << "Input number of children: ";
-    cin >> numChild;
-    if (numChild < 0 || !cin) {
-        cout << "number of children must be a positive number" << endl;
-        return EXIT_FAILURE;
-    }
-    cout << "Input meal type [S or D]: ";
-    cin >> mealType;
-    cout << mealType;
-    if (toupper(mealType) != 'S' && toupper(mealType) != 'D') {
-        cout << "Meal type must be S or D" << endl;
-        return EXIT_FAILURE;
-    }
-    cout << "Input if its a weekend (Y or N): ";
-    cin >> weekend;
-    if (toupper(weekend) != 'Y' && toupper(weekend) != 'N') {
-        cout << "Weekend must be Y or N" << endl;
-        return EXIT_FAILURE;
-    }
-    cout << "Input deposit ammount: ";
-    cin >> deposit;
-    if (deposit < 0 || !cin) {
-        cout << "Deposit must be a positive number" << endl;
-        return EXIT_FAILURE;
-    }
+    while (!infile.eof()) {
+        error = false;
+        infile >> partyID;
+        ofile << "PartyID: " << partyID << endl;
+        if (partyID < 0) {
+            ofile << "PartyID must be a positive number" << endl;
+            error = true;
+        }
 
-    cout << partyID << "\t" << numAdults << "\t" <<
-    numChild << "\t" << mealType << "\t" <<
-    weekend << "\t" << deposit << endl;
+        infile >> numAdults;
+        if (numAdults < 0) {
+            ofile << "number of adults must be a positive number" << endl;
+            error = true;
+        }
 
-    return EXIT_SUCCESS;
+        infile >> numChild;
+        if (numChild < 0) {
+             ofile << "number of children must be a positive number" << endl;
+             error = true;
+        }
+
+        infile >> mealType;
+        if (toupper(mealType) != 'S' && toupper(mealType) != 'D') {
+            ofile << "Meal type must be S or D" << endl;
+            error = true;
+        }
+
+        infile >> weekend;
+        if (toupper(weekend) != 'Y' && toupper(weekend) != 'N') {
+            ofile << "Weekend must be Y or N" << endl;
+            error = true;
+        }
+
+        infile >> deposit;
+        if (deposit < 0) {
+            ofile << "Deposit must be a positive number" << endl;
+            error = true;
+        }
+
+        if (!error) {
+            ofile << "No errors detected" << endl;
+        }
+        ofile << "---------------------------------------" << endl;
+
+        party.partyID = partyID;
+        party.numAdults = numAdults;
+        party.numChild = numChild;
+        party.mealType = mealType;
+        party.weekend = weekend;
+        party.deposit = deposit;
+        partys.push_back(party);
+    }
+    infile.close();
+
+    return 0;
 }
 
 double calcCostOfMeals_f2(int numPerson, bool isAdult, char mealType) {
@@ -121,13 +137,19 @@ double calcAdditionalCosts_f3(double totalBill, bool isWeekend) {
 }
 
 int calcTotalBill_f4(Party party) {
+    ofstream ofile;
     double costOfMeals;
     double surcharge;
     double tipAndTax;
     double tcop;
     double tbd;
 
-    cout << showpoint << fixed << setprecision(2);
+    ofile << showpoint << fixed << setprecision(2);
+
+    ofile.open("partys.txt", std::ios_base::app);
+    if (!ofile) {
+        return 1;
+    }
     
     costOfMeals = calcCostOfMeals_f2(party.numAdults, true, party.mealType);
     costOfMeals += calcCostOfMeals_f2(party.numChild, false, party.mealType);
@@ -143,35 +165,74 @@ int calcTotalBill_f4(Party party) {
     tcop = costOfMeals + surcharge + tipAndTax;
     tbd = tcop - party.deposit;
 
-    cout << "Party ID: " << party.partyID << endl;
-    cout << "Number of adults: " << party.numAdults << endl;
-    cout << "Number of children: " << party.numChild << endl;
-    cout << "Cost for meals: $" << costOfMeals << endl;
-    cout << "Surcharge: $" << surcharge << endl;
-    cout << "Tax and tip: $" << tipAndTax << endl;
-    cout << "Total cost of party: $" << tcop << endl;
-    cout << "Deposit: $" << party.deposit << endl;
-    cout << "total balence due: $" << tbd << endl; 
+    ofile << "Party ID: " << party.partyID << endl;
+    ofile << "Number of adults: " << party.numAdults << endl;
+    ofile << "Number of children: " << party.numChild << endl;
+    ofile << "Cost for meals: $" << costOfMeals << endl;
+    ofile << "Surcharge: $" << surcharge << endl;
+    ofile << "Tax and tip: $" << tipAndTax << endl;
+    ofile << "Total cost of party: $" << tcop << endl;
+    ofile << "Deposit: $" << party.deposit << endl;
+    ofile << "total balence due: $" << tbd << endl; 
+    ofile << "------------------------------------" << endl;
 
-    return EXIT_SUCCESS;
+    return 0;
 }
 /*
-int getInputFromKB_f1(); <-- function 1
-Input party ID: 10
-Input number of adults: 0
-Input number of children: 20
-Input meal type [S or D]: S
-SInput if its a weekend (Y or N): N
-Input deposit ammount: 100
-10      0       20      S       N       100.00
----------------------------------------------------
-double calcCostOfMeals_f2(int numPerson, bool isAdult, char mealType); <-- function 2
-Cost of meals: $130.50
----------------------------------------------------
-double calcAdditionalCosts_f3(double totalBill, bool isWeekend); <-- function 3
-Tip/tax and surcharge: $25.13
----------------------------------------------------
-int calcTotalBill_f4(Party party); <-- function 4
+<-------------data.txt------------->
+1	10 	0	S	Y	100.00
+2	27	3	D	Y	57.50
+3	125	17	D	N	0.00
+4	4	0	S	N	25.00
+5	0		25	S	Y	23.75
+6	250	43	D	N	500.00
+7	0	0	D	N	0.0
+8	10	0	R	Y	10.00
+9	17	3	D	R	15.00
+10	5	0	D	Y	275.00
+11	-3	10	D	Y	20.00
+12	14	-1	S	N	30.00
+13	20	3	D	Y	-10.00
+<-------------errors.txt------------->
+PartyID: 1
+No errors detected
+---------------------------------------
+PartyID: 2
+No errors detected
+---------------------------------------
+PartyID: 3
+No errors detected
+---------------------------------------
+PartyID: 4
+No errors detected
+---------------------------------------
+PartyID: 5
+No errors detected
+---------------------------------------
+PartyID: 6
+No errors detected
+---------------------------------------
+PartyID: 7
+No errors detected
+---------------------------------------
+PartyID: 8
+Meal type must be S or D
+---------------------------------------
+PartyID: 9
+Weekend must be Y or N
+---------------------------------------
+PartyID: 10
+No errors detected
+---------------------------------------
+PartyID: 11
+number of adults must be a positive number
+---------------------------------------
+PartyID: 12
+number of children must be a positive number
+---------------------------------------
+PartyID: 13
+Deposit must be a positive number
+<-------------partys.txt------------->
 Party ID: 1
 Number of adults: 10
 Number of children: 0
@@ -181,4 +242,125 @@ Tax and tip: $39.15
 Total cost of party: $259.39
 Deposit: $100.00
 total balence due: $159.39
+------------------------------------
+Party ID: 2
+Number of adults: 27
+Number of children: 3
+Cost for meals: $743.04
+Surcharge: $9.36
+Tax and tip: $133.75
+Total cost of party: $886.15
+Deposit: $57.50
+total balence due: $828.65
+------------------------------------
+Party ID: 3
+Number of adults: 125
+Number of children: 17
+Cost for meals: $3488.16
+Surcharge: $0.00
+Tax and tip: $627.87
+Total cost of party: $4116.03
+Deposit: $0.00
+total balence due: $4116.03
+------------------------------------
+Party ID: 4
+Number of adults: 4
+Number of children: 0
+Cost for meals: $87.00
+Surcharge: $0.00
+Tax and tip: $15.66
+Total cost of party: $102.66
+Deposit: $25.00
+total balence due: $77.66
+------------------------------------
+Party ID: 5
+Number of adults: 0
+Number of children: 25
+Cost for meals: $326.25
+Surcharge: $4.11
+Tax and tip: $58.72
+Total cost of party: $389.09
+Deposit: $23.75
+total balence due: $365.34
+------------------------------------
+Party ID: 6
+Number of adults: 250
+Number of children: 43
+Cost for meals: $7115.64
+Surcharge: $0.00
+Tax and tip: $1280.82
+Total cost of party: $8396.46
+Deposit: $500.00
+total balence due: $7896.46
+------------------------------------
+Party ID: 7
+Number of adults: 0
+Number of children: 0
+Cost for meals: $0.00
+Surcharge: $0.00
+Tax and tip: $0.00
+Total cost of party: $0.00
+Deposit: $0.00
+total balence due: $0.00
+------------------------------------
+Party ID: 8
+Number of adults: 10
+Number of children: 0
+Cost for meals: $0.00
+Surcharge: $0.00
+Tax and tip: $0.00
+Total cost of party: $0.00
+Deposit: $10.00
+total balence due: $-10.00
+------------------------------------
+Party ID: 9
+Number of adults: 17
+Number of children: 3
+Cost for meals: $485.04
+Surcharge: $0.00
+Tax and tip: $87.31
+Total cost of party: $572.35
+Deposit: $15.00
+total balence due: $557.35
+------------------------------------
+Party ID: 10
+Number of adults: 5
+Number of children: 0
+Cost for meals: $129.00
+Surcharge: $1.63
+Tax and tip: $23.22
+Total cost of party: $153.85
+Deposit: $275.00
+total balence due: $-121.15
+------------------------------------
+Party ID: 11
+Number of adults: -3
+Number of children: 10
+Cost for meals: $77.40
+Surcharge: $0.98
+Tax and tip: $13.93
+Total cost of party: $92.31
+Deposit: $20.00
+total balence due: $72.31
+------------------------------------
+Party ID: 12
+Number of adults: 14
+Number of children: -1
+Cost for meals: $291.45
+Surcharge: $0.00
+Tax and tip: $52.46
+Total cost of party: $343.91
+Deposit: $30.00
+total balence due: $313.91
+------------------------------------
+Party ID: 13
+Number of adults: 20
+Number of children: 3
+Cost for meals: $562.44
+Surcharge: $7.09
+Tax and tip: $101.24
+Total cost of party: $670.77
+Deposit: $-10.00
+total balence due: $680.77
+------------------------------------
 */
