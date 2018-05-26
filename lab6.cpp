@@ -5,6 +5,7 @@
 #include <fstream>
 #include <vector>
 #include <iomanip>
+#include <iostream>
 
 using namespace std;
 
@@ -136,19 +137,13 @@ double calcAdditionalCosts_f3(double totalBill, bool isWeekend) {
 }
 
 int calcTotalBill_f4(Party party) {
-    ofstream ofile;
     double costOfMeals;
     double surcharge;
     double tipAndTax;
     double tcop;
     double tbd;
 
-    ofile << showpoint << fixed << setprecision(2);
-
-    ofile.open("partys.txt", std::ios_base::app);
-    if (!ofile) {
-        return 1;
-    }
+    cout << showpoint << fixed << setprecision(2);
     
     costOfMeals = calcCostOfMeals_f2(party.numAdults, true, party.mealType);
     costOfMeals += calcCostOfMeals_f2(party.numChild, false, party.mealType);
@@ -164,18 +159,16 @@ int calcTotalBill_f4(Party party) {
     tcop = costOfMeals + surcharge + tipAndTax;
     tbd = tcop - party.deposit;
 
-    ofile << "Party ID: " << party.partyID << endl;
-    ofile << "Number of adults: " << party.numAdults << endl;
-    ofile << "Number of children: " << party.numChild << endl;
-    ofile << "Cost for meals: $" << costOfMeals << endl;
-    ofile << "Surcharge: $" << surcharge << endl;
-    ofile << "Tax and tip: $" << tipAndTax << endl;
-    ofile << "Total cost of party: $" << tcop << endl;
-    ofile << "Deposit: $" << party.deposit << endl;
-    ofile << "total balence due: $" << tbd << endl; 
-    ofile << "------------------------------------" << endl;
-
-    return 0;
+    cout << "Party ID: " << party.partyID << endl;
+    cout << "Number of adults: " << party.numAdults << endl;
+    cout << "Number of children: " << party.numChild << endl;
+    cout << "Cost for meals: $" << costOfMeals << endl;
+    cout << "Surcharge: $" << surcharge << endl;
+    cout << "Tax and tip: $" << tipAndTax << endl;
+    cout << "Total cost of party: $" << tcop << endl;
+    cout << "Deposit: $" << party.deposit << endl;
+    cout << "total balence due: $" << tbd << endl; 
+    cout << "------------------------------------" << endl;
 }
 /*
 <-------------data.txt------------->
@@ -231,7 +224,7 @@ number of children must be a positive number
 ---------------------------------------
 PartyID: 13
 Deposit must be a positive number
-<-------------partys.txt------------->
+<-------------Output------------->
 Party ID: 1
 Number of adults: 10
 Number of children: 0
