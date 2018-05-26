@@ -140,6 +140,8 @@ void printAboveAverageIncome(vector<House> houses) {
             cout << houseid << "\t" << houses[i].income << endl; 
         }
     }
+
+    cout << "Average household income: " << avgincome << endl;
 }
 
 void printBelowPovertyLevel(vector<House> houses) {
@@ -174,10 +176,10 @@ void printMedianHouseholdIncome(vector<House> houses) {
 
     if (houses.size() % 2 == 0) {
         cout << "Median household income: "
-             << (houses[ma].income + houses[ma + 1].income) / 2 << endl;
+             << (houses[ma].income + houses[ma - 1].income) / 2 << endl;
     } else {
         cout << "Median household income: "
-             << houses[ma + 1].income << endl;
+             << houses[ma].income << endl;
     }
 }
 /*
@@ -233,6 +235,7 @@ EEEE    36000.00
 JURY    100000.00
 KNEL    80000.00
 LIST    41000.00
+Average household income: 28568.75
 Press any key to exit
 <----------------Menu C---------------->
 Percentage of households below poverty level: %31.25
@@ -257,6 +260,6 @@ KNEL    80000.00         4
 JURY   100000.00         5
 Press any key to exit
 <----------------Menu E---------------->
-Median household income: 24250.00
+Median household income: 22800.00
 Press any key to exit
 */
