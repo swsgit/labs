@@ -3,7 +3,6 @@
 // 5/2/18 Lab #6C
 #include <algorithm>
 #include <fstream>
-#include <string>
 #include <vector>
 #include <iomanip>
 
