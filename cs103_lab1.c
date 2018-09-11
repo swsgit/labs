@@ -13,12 +13,9 @@ int clean_stdin();
 
 int main(void) {
 	/* variables (a, b, c) denote the length of a traingle's sides */
-	double a, b, c;
-	double area;
-	char ch;
-	char answer;
+	double a, b, c, area;
+	char ch, answer;
 	int cont;
-	char buf[50];
 
 	for (;;) {
 		printf("Enter 3 numbers: ");
