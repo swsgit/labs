@@ -1,3 +1,8 @@
+/* 
+	Stone, Spencer
+	Lab 1
+	9/17/18
+*/
 #include <stdio.h>
 #include <math.h>
 
@@ -13,15 +18,17 @@ int main(void) {
 	char ch;
 	char answer;
 	int cont;
+	char buf[50];
 
 	for (;;) {
 		printf("Enter 3 numbers: ");
 		if ((scanf("%lf %lf %lf%c", &a, &b, &c, &ch) != 4 || ch != '\n') && clean_stdin()) {}
+		printf("Numbers entered: %4.2f %4.2f %4.2f\n", a, b, c);
 		/* validate user input */
 		if (is_valid_triangle(a, b, c)) {
 			/* print triangle area and type */
 			area = calculate_area(a, b, c);
-			printf("Triangle area: %4.3f\n", area);
+			printf("Triangle area: %4.2f\n", area);
 			print_triangle_type(a, b, c);
 			return 1;
 		} else {
@@ -81,36 +88,43 @@ int clean_stdin() {
 ~$ gcc -Wall -Wextra -O2 main.c
 ~$ ./a
 Enter 3 numbers: 1.41 1.41 1.41
-Triangle area: 0.861
+Numbers entered: 1.41 1.41 1.41
+Triangle area: 0.86
 Equilateral triangle
 
 ~$ ./a
 Enter 3 numbers: 5 8 4
-Triangle area: 8.182
+Numbers entered: 5.00 8.00 4.00
+Triangle area: 8.18
 Scalene triangle
 
 ~$ ./a
 Enter 3 numbers: 5 5 8
-Triangle area: 12.000
+Numbers entered: 5.00 5.00 8.00
+Triangle area: 12.00
 Isosceles triangle
 
 ~$ ./a
 Enter 3 numbers: -1 -1 -1
+Numbers entered: -1.00 -1.00 -1.00
 Invalid triangle geometry. Continue? (y/n) n
 
 ~$ ./a
 Enter 3 numbers: -1 0 0
+Numbers entered: -1.00 0.00 0.00
 Invalid triangle geometry. Continue? (y/n) awd
 invalid selection
 Continue? (y/n) awd
 invalid selection
 Continue? (y/n) y
 Enter 3 numbers: 1.41 1.41 1.41
-Triangle area: 0.861
+Numbers entered: 1.41 1.41 1.41
+Triangle area: 0.86
 Equilateral triangle
 
 ~$ ./a
 Enter 3 numbers: a b c
+Numbers entered: 0.000 0.000 0.000
 Invalid triangle geometry. Continue? (y/n) n
 ...
 */
