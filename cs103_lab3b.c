@@ -85,46 +85,46 @@ int8_t get_number(int32_t *num) {
 
 int32_t add(int32_t a, int32_t b) {
 	if ((b > 0) && (a > INT32_MAX - b)) {
-		printf("\nError: integer overflow (%d + %d)\n", a, b);
+		printf("\nError: integer overflow (%"PRIi32" + %"PRIi32")\n", a, b);
 		exit(EXIT_FAILURE);
 	} else if ((b < 0) && (a < INT32_MIN - b)) {
-		printf("\nError: integer underflow (%d + %d)\n", a, b);
+		printf("\nError: integer underflow (%"PRIi32" +%"PRIi32")\n", a, b);
 		exit(EXIT_FAILURE);
 	} else { return a + b; }
 }
 int32_t subtract(int32_t a, int32_t b) {
 	if ((b < 0) && (a > INT32_MAX + b)) {
-		printf("\nError: integer overflow (%d - %d)\n", a, b);
+		printf("\nError: integer overflow (%"PRIi32" - %"PRIi32")\n", a, b);
 		exit(EXIT_FAILURE);
 	} else if ((b > 0) && (a < INT32_MIN + b)) {
-		printf("\nError: integer underflow (%d - %d)\n", a, b);
+		printf("\nError: integer underflow (%"PRIi32" - %"PRIi32")\n", a, b);
 		exit(EXIT_FAILURE);
 	} else { return a - b; }
 }
 int32_t multiply(int32_t a, int32_t b) {
 	if (a > INT32_MAX / b) {
-		printf("\nError: integer overflow (%d * %d)\n", a, b);
+		printf("\nError: integer overflow (%"PRIi32" * %"PRIi32")\n", a, b);
 		exit(EXIT_FAILURE);
 	} else if (a < INT32_MIN / b) {
-		printf("\nError: integer underflow (%d * %d)\n", a, b);
+		printf("\nError: integer underflow (%"PRIi32" * %"PRIi32")\n", a, b);
 		exit(EXIT_FAILURE);
 	} else if ((a == -1) && (b == INT32_MIN)) {
-		printf("\nError: possible integer overflow (%d * %d)\n", a, b);
+		printf("\nError: possible integer overflow (%"PRIi32" * %"PRIi32")\n", a, b);
 		exit(EXIT_FAILURE);
 	} else if ((b == -1) && (a == INT32_MIN)) {
-		printf("\nError: possible integer overflow (%d * %d)\n", a, b);
+		printf("\nError: possible integer overflow (%"PRIi32" * %"PRIi32")\n", a, b);
 		exit(EXIT_FAILURE);
 	} else { return a * b; }
 }
 int32_t divide(int32_t a, int32_t b) { 
 	if (b == 0) {
-		printf("\nError: cannot divide by zero (%d / %d)", a, b);
+		printf("\nError: cannot divide by zero (%"PRIi32" / %"PRIi32")", a, b);
 		exit(EXIT_FAILURE);
 	} else if ((a == -1) && (b == INT32_MIN)) {
-		printf("\nError: possible integer overflow (%d / %d)\n", a, b);
+		printf("\nError: possible integer overflow (%"PRIi32" / %"PRIi32")\n", a, b);
 		exit(EXIT_FAILURE);
 	} else if ((b == -1) && (a == INT32_MIN)) {
-		printf("\nError: possible integer overflow (%d / %d)\n", a, b);
+		printf("\nError: possible integer overflow (%"PRIi32" / %"PRIi32")\n", a, b);
 		exit(EXIT_FAILURE);
 	} else { return a / b; }
 }
