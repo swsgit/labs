@@ -15,7 +15,7 @@
 char *generate_s1(void);
 char *generate_s2(char *c);
 char *strfilter(char s1[], char s2[], char c);
-size_t _strlen(char str[]);
+int _strlen(char str[]);
 
 int main(void) {
   char c;
@@ -37,7 +37,7 @@ char *generate_s1(void) {
   /* seed rand() so it produces unique results each run
      cast to unsigned int to avoid compiler warning */
   srand((unsigned int)time(NULL));
-  for (size_t i = 0; i < 40; i++) {
+  for (int i = 0; i < 40; i++) {
     /* return random number between [0, 26] then
        rebase integer by adding 65, putting it between [A, Z] */
     str[i] = (rand() / ((RAND_MAX / 26) + 1)) + 65;
@@ -50,9 +50,9 @@ char *generate_s1(void) {
 
 char *generate_s2(char *c) {
   static char str[23];
-  size_t len;
-  size_t i;
   bool done = false;
+  int len;
+  int i;
   int ch;
 
   while (!done) {
@@ -96,17 +96,17 @@ char *generate_s2(char *c) {
 
 char *strfilter(char s1[], char s2[], char c) {
   static char str[41];
-  size_t s1_len = _strlen(s1);
-  size_t s2_len = _strlen(s2);
+  int s1_len = _strlen(s1);
+  int s2_len = _strlen(s2);
 
   /* copy contents of s1 into str */
-  for (size_t i = 0; i < s1_len; i++) {
+  for (int i = 0; i < s1_len; i++) {
     str[i] = s1[i];
   }
 
-  size_t str_len = _strlen(str);
-  for (size_t i = 0; i < s2_len; i++) {
-    for (size_t j = 0; j < str_len; j++) {
+  int str_len = _strlen(str);
+  for (int i = 0; i < s2_len; i++) {
+    for (int j = 0; j < str_len; j++) {
       if (s2[i] == str[j]) {
         str[j] = c;
       }
@@ -116,8 +116,8 @@ char *strfilter(char s1[], char s2[], char c) {
   return str;
 }
 
-size_t _strlen(char str[]) {
-  size_t i = 0;
+int _strlen(char str[]) {
+  int i = 0;
   while (str[i] != '\0')
     i++;
   return i;
