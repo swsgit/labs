@@ -19,7 +19,6 @@ int _strlen(char str[]);
 
 int main(void) {
   char c;
-
   char *s1 = generate_s1();
   char *s2 = generate_s2(&c);
   char *fs1 = strfilter(s1, s2, c);
@@ -33,23 +32,23 @@ int main(void) {
 }
 
 char *generate_s1(void) {
-  static char str[41];
+  static char s1[41];
   /* seed rand() so it produces unique results each run
      cast to unsigned int to avoid compiler warning */
   srand((unsigned int)time(NULL));
   for (int i = 0; i < 40; i++) {
     /* return random number between [0, 26] then
        rebase integer by adding 65, putting it between [A, Z] */
-    str[i] = (rand() / ((RAND_MAX / 26) + 1)) + 65;
+    s1[i] = (rand() / ((RAND_MAX / 26) + 1)) + 65;
   }
   /* finalize the string a with null terminator */
-  str[40] = '\0';
+  s1[40] = '\0';
 
-  return str;
+  return s1;
 }
 
 char *generate_s2(char *c) {
-  static char str[23];
+  static char s2[23];
   bool done = false;
   int len;
   int i;
@@ -58,26 +57,26 @@ char *generate_s2(char *c) {
   while (!done) {
     /* get s2 from user then clear stdin */
     printf("Enter uppercase characters [A, Z]: ");
-    char *ret = fgets(str, sizeof str, stdin);
+    char *ret = fgets(s2, sizeof s2, stdin);
     if (ret == NULL) {
       exit(EXIT_FAILURE);
     }
     fseek(stdin, 0, SEEK_END);
     /* find newline character and replace it with null terminator */
-    for (i = 0; i < sizeof str; i++) {
-      if (str[i] == '\n') {
-        str[i] = '\0';
+    for (i = 0; i < sizeof s2; i++) {
+      if (s2[i] == '\n') {
+        s2[i] = '\0';
       }
     }
     /* check if string meets requirements:
        minimum 2 chars, max 20 chars, [A-Z] */
-    len = _strlen(str);
+    len = _strlen(s2);
     i = 0;
     while (!done) {
       if (len < 2 || len > 20) {
         printf("String length must be bewtween [2, 20]\n");
         break;
-      } else if (!VALID_INPUT(str[i])) {
+      } else if (!VALID_INPUT(s2[i])) {
         printf("String must contain uppercase letters [A-Z]\n");
         break;
       } else if (i == len) {
@@ -91,29 +90,30 @@ char *generate_s2(char *c) {
   printf("Enter replacement character: ");
   ch = getchar();
   *c = ch;
-  return str;
+  return s2;
 }
 
 char *strfilter(char s1[], char s2[], char c) {
-  static char str[41];
+  static char fs1[41];
   int s1_len = _strlen(s1);
   int s2_len = _strlen(s2);
+  int fs1_len;
 
   /* copy contents of s1 into str */
   for (int i = 0; i < s1_len; i++) {
-    str[i] = s1[i];
+    fs1[i] = s1[i];
   }
 
-  int str_len = _strlen(str);
+  fs1_len = _strlen(fs1);
   for (int i = 0; i < s2_len; i++) {
-    for (int j = 0; j < str_len; j++) {
-      if (s2[i] == str[j]) {
-        str[j] = c;
+    for (int j = 0; j < fs1_len; j++) {
+      if (fs1[j] == s2[i]) {
+        fs1[j] = c;
       }
     }
   }
 
-  return str;
+  return fs1;
 }
 
 int _strlen(char str[]) {
