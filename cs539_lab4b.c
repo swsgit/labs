@@ -20,13 +20,16 @@ int _strlen(char str[]);
 int main(void) {
   char c;
   char *s1 = generate_s1();
-  char *s2 = generate_s2(&c);
-  char *fs1 = strfilter(s1, s2, c);
 
-  printf("s1          = {\"%s\"}\n", s1);
-  printf("s2          = {\"%s\"}\n", s2);
-  printf("c           = {\"%c\"}\n", c);
-  printf("filtered s1 = {\"%s\"}\n", fs1);
+  for (;;) {
+    char *s2 = generate_s2(&c);
+    char *fs1 = strfilter(s1, s2, c);
+
+    printf("s1          = {\"%s\"}\n", s1);
+    printf("s2          = {\"%s\"}\n", s2);
+    printf("c           = {\"%c\"}\n", c);
+    printf("filtered s1 = {\"%s\"}\n", fs1);
+  }
 
   return 1;
 }
@@ -89,6 +92,7 @@ char *generate_s2(char *c) {
 
   printf("Enter replacement character: ");
   ch = getchar();
+  fseek(stdin, 0, SEEK_END);
   *c = ch;
   return s2;
 }
@@ -122,3 +126,26 @@ int _strlen(char str[]) {
     i++;
   return i;
 }
+/*
+Enter uppercase characters [A, Z]:
+String length must be bewtween [2, 20]
+Enter uppercase characters [A, Z]: test
+String must contain uppercase letters [A-Z]
+Enter uppercase characters [A, Z]: A
+String length must be bewtween [2, 20]
+Enter uppercase characters [A, Z]: AAAAAAAAAAAAAAAAAAAAAAAAA
+String length must be bewtween [2, 20]
+Enter uppercase characters [A, Z]: AL
+Enter replacement character: *
+s1          = {"OGXEKOMNDYZCILLTADZPMLRFTHJSKRRNRDLFLCFR"}
+s2          = {"AL"}
+c           = {"*"}
+filtered s1 = {"OGXEKOMNDYZCI**T*DZPM*RFTHJSKRRNRD*F*CFR"}
+Enter uppercase characters [A, Z]: TEST
+Enter replacement character: .
+s1          = {"OGXEKOMNDYZCILLTADZPMLRFTHJSKRRNRDLFLCFR"}
+s2          = {"TEST"}
+c           = {"."}
+filtered s1 = {"OGX.KOMNDYZCILL.ADZPMLRF.HJ.KRRNRDLFLCFR"}
+Enter uppercase characters [A, Z]:
+*/
