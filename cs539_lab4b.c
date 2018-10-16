@@ -40,9 +40,9 @@ char *generate_s1(void) {
      cast to unsigned int to avoid compiler warning */
   srand((unsigned int)time(NULL));
   for (int i = 0; i < 40; i++) {
-    /* return random number between [0, 26] then
-       rebase integer by adding 65, putting it between [A, Z] */
-    s1[i] = (rand() / ((RAND_MAX / 26) + 1)) + 65;
+    /* return random number between [M, N]
+       M + rand() / (RAND_MAX / (N - M + 1) + 1) */
+    s1[i] = 65 + rand() / (RAND_MAX / (90 - 65 + 1) + 1);
   }
   /* finalize the string a with null terminator */
   s1[40] = '\0';
@@ -71,7 +71,7 @@ char *generate_s2(char *c) {
         s2[i] = '\0';
       }
     }
-    /* check if string meets requirements:
+    /* check if s2 meets requirements:
        minimum 2 chars, max 20 chars, [A-Z] */
     len = _strlen(s2);
     i = 0;
