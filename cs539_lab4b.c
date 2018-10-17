@@ -56,6 +56,8 @@ char *generate_s2(char *c) {
   int len;
   int i;
   int ch;
+  int count = 0;
+  int old_ch = 0;
 
   while (!done) {
     /* get s2 from user then clear stdin */
@@ -71,7 +73,7 @@ char *generate_s2(char *c) {
         s2[i] = '\0';
       }
     }
-    /* check if s2 meets requirements:
+    /* check if string meets requirements:
        minimum 2 chars, max 20 chars, [A-Z] */
     len = _strlen(s2);
     i = 0;
@@ -90,10 +92,26 @@ char *generate_s2(char *c) {
     }
   }
 
+  /* get replacement character from stdin,
+       replacement char must be a single char */
+  done = false;
   printf("Enter replacement character: ");
-  ch = getchar();
+  while (!done && (ch = getchar())) {
+    if (count > 1) {
+      fseek(stdin, 0, SEEK_END);
+      printf("Replacement character must be a single character\n");
+      printf("Enter replacement character: ");
+      count = 0;
+      old_ch = 0;
+      continue;
+    } else if (ch == '\n' && old_ch != '\n') {
+      *c = old_ch;
+      done = true;
+    }
+    count++;
+    old_ch = ch;
+  }
   fseek(stdin, 0, SEEK_END);
-  *c = ch;
   return s2;
 }
 
@@ -147,5 +165,15 @@ s1          = {"OGXEKOMNDYZCILLTADZPMLRFTHJSKRRNRDLFLCFR"}
 s2          = {"TEST"}
 c           = {"."}
 filtered s1 = {"OGX.KOMNDYZCILL.ADZPMLRF.HJ.KRRNRDLFLCFR"}
+Enter uppercase characters [A, Z]:
+----------------------------------------------------------------
+Enter uppercase characters [A, Z]: ABC
+Enter replacement character: ./
+Replacement character must be a single character
+Enter replacement character: .
+s1          = {"LSCZMOOQQUOAKXHLJELCODQNFJNMBLVMGNXRSTQK"}
+s2          = {"ABC"}
+c           = {"."}
+filtered s1 = {"LS.ZMOOQQUO.KXHLJEL.ODQNFJNM.LVMGNXRSTQK"}
 Enter uppercase characters [A, Z]:
 */
