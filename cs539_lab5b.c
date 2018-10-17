@@ -2,7 +2,7 @@
         Stone, Spencer
         11/10/18
         Lab 5B
-        Description: Replace the contents of a string 
+        Description: Replace the contents of a string
                      with the contents of another string.
         Compile: gcc main.c -O2 -Wall -Werror -std=gnu11 -o main
 */
@@ -78,7 +78,8 @@ char *generate_s2(char *c) {
       }
     }
     /* shift ptr back to starting position */
-    for (i = 0; i < sizeof s2; i++, (void)*(ptr--));
+    for (i = 0; i < sizeof s2; i++, (void)*(ptr--))
+      ;
     /* check if string meets requirements:
        minimum 2 chars, max 20 chars, [A-Z] */
     len = _strlen(s2);
@@ -134,11 +135,12 @@ char *strfilter(char *s1, char *s2, char c) {
   /* copy contents of s1_ptr into fs1_ptr */
   for (int i = 0; i < s1_len; i++) {
     *fs1_ptr = *s1_ptr;
-    (void)*(s1_ptr++); 
+    (void)*(s1_ptr++);
     (void)*(fs1_ptr++);
   }
   /* shift fs1_ptr and s1_ptr to start */
-  for (int i = 0; i < s1_len; i++, (void)*(s1_ptr--), (void)*(fs1_ptr--));
+  for (int i = 0; i < s1_len; i++, (void)*(s1_ptr--), (void)*(fs1_ptr--))
+    ;
 
   /* find occurences of s2_ptr in fs1_ptr and replace */
   for (int i = 0; i < s2_len; i++) {
@@ -149,12 +151,14 @@ char *strfilter(char *s1, char *s2, char c) {
       (void)*(fs1_ptr++);
     }
     /* rewind fs1_ptr after every full loop of its contents */
-    for (int j = 0; j < fs1_len; j++, (void)*(fs1_ptr--));
+    for (int j = 0; j < fs1_len; j++, (void)*(fs1_ptr--))
+      ;
     (void)*(s2_ptr++);
   }
 
   /* shift s2_ptr to start */
-  for (int i = 0; i < s2_len; i++, (void)*(s2_ptr--));
+  for (int i = 0; i < s2_len; i++, (void)*(s2_ptr--))
+    ;
 
   return fs1;
 }
@@ -189,7 +193,7 @@ s1          = {"OGXEKOMNDYZCILLTADZPMLRFTHJSKRRNRDLFLCFR"}
 s2          = {"TEST"}
 c           = {"."}
 filtered s1 = {"OGX.KOMNDYZCILL.ADZPMLRF.HJ.KRRNRDLFLCFR"}
-Enter uppercase characters [A, Z]: 
+Enter uppercase characters [A, Z]:
 ----------------------------------------------------------------
 Enter uppercase characters [A, Z]: ABC
 Enter replacement character: ./
