@@ -2,7 +2,8 @@
         Stone, Spencer
         11/10/18
         Lab 4B
-        Description:
+        Description: Replace the contents of a string
+                     with the contents of another string.
         Compile: gcc main.c -O2 -Wall -Werror -std=gnu11 -o main
 */
 #include <stdio.h>
