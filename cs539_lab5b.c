@@ -171,6 +171,13 @@ int _strlen(char *str) {
   while (*ptr != '\0') {
     ptr++;
   }
+  /* subtract the start of the memory address of str
+     from the adress that stores '\0' in str
+     to obtain its length as a string.
+     Example:
+         str           = 0x0001
+         str+5         = 0x0006 ('\0' is stored at 0x0006)
+        (str+5) - str  = 0x0005 ((int)"\x05" == 5) */
   return ptr - str;
 }
 /*
