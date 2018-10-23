@@ -2,9 +2,9 @@
         Stone, Spencer
         11/10/18
         Lab 5B
-        Description: Replace the contents of a string
-                     with the contents of another string
-                     using a replacement character.
+        Description: Replace the elements of a string
+                     containing elements of another string,
+                     with a replacement character.
         Compile: gcc main.c -O2 -Wall -Werror -std=gnu11 -o main
 */
 #include <stdio.h>
