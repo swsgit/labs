@@ -11,7 +11,7 @@
 #include <time.h>
 #include <stdbool.h>
 
-#define VALID_INPUT(x) ((x >= 'A' && x <= 'Z') || x == '\n' || x == '\0')
+#define VALID_INPUT(x) ((x >= 'A' && x <= 'Z') || x == '\0')
 
 char *generate_s1(void);
 char *generate_s2(char *c);
@@ -37,14 +37,14 @@ int main(void) {
 
 char *generate_s1(void) {
   static char s1[41];
-  static char *ptr = &s1[0];
-  /* seed rand() so it produces unique results each run
+  char *ptr = s1;
+  /* seed rand() so it produces unique results each run,
      cast to unsigned int to avoid compiler warning */
   srand((unsigned int)time(NULL));
-  for (int i = 0; i < 40; i++, (void)*(ptr++)) {
+  for (int i = 0; i < 40; i++, ptr++) {
     /* return random number between [M, N]
        M + rand() / (RAND_MAX / (N - M + 1) + 1) */
-    *ptr = (char)(65 + rand() / (RAND_MAX / (90 - 65 + 1) + 1));
+    *ptr = 65 + rand() / (RAND_MAX / (90 - 65 + 1) + 1);
   }
   /* finalize the string a with null terminator */
   *ptr = '\0';
@@ -54,60 +54,68 @@ char *generate_s1(void) {
 
 char *generate_s2(char *c) {
   static char s2[23];
-  static char *ptr = &s2[0];
+  char *ptr = s2;
+  char *ptr_start = s2;
   bool done = false;
-  int len;
+  int s2_len;
   int i;
   int ch;
   int old_ch = '\n';
   int count = 0;
 
   while (!done) {
-    /* get s2 from user then clear stdin */
+    /* get s2 from the user and store its
+       length in s2_len then clear stdin */
     printf("Enter uppercase characters [A, Z]: ");
     char *ret = fgets(s2, sizeof s2, stdin);
     if (ret == NULL) {
       exit(EXIT_FAILURE);
     }
     fseek(stdin, 0, SEEK_END);
+    s2_len = _strlen(s2);
 
-    /* find newline character and replace it with null terminator */
-    for (i = 0; i < sizeof s2; i++, (void)*(ptr++)) {
+    /* find the newline character and replace it with null terminator */
+    for (i = 0; i < s2_len; i++, ptr++) {
       if (*ptr == '\n') {
         *ptr = '\0';
       }
     }
-    /* shift ptr back to starting position */
-    for (i = 0; i < sizeof s2; i++, (void)*(ptr--))
-      ;
+    /* shift ptr back to the start of the array then
+       store the new length of s2 in s2_len */
+    ptr = ptr_start;
+    s2_len = _strlen(s2);
+
     /* check if string meets requirements:
        minimum 2 chars, max 20 chars, [A-Z] */
-    len = _strlen(s2);
     i = 0;
     while (!done) {
-      if (len < 2 || len > 20) {
+      if (s2_len < 2 || s2_len > 20) {
         printf("String length must be bewtween [2, 20]\n");
         break;
       } else if (!VALID_INPUT(*ptr)) {
         printf("String must contain uppercase letters [A-Z]\n");
         break;
-      } else if (i == len) {
+      } else if (i == s2_len) {
         done = true;
         break;
       }
-      (void)*(ptr++);
+      ptr++;
       i++;
     }
+    /* shift ptr to the start of the
+       array incase input was invalid */
+    ptr = ptr_start;
   }
+
   /* get replacement character from stdin,
      replacement char must be a single char */
   done = false;
   printf("Enter replacement character: ");
   while (!done && (ch = getchar())) {
     if (count > 1) {
-      fseek(stdin, 0, SEEK_END);
       printf("Replacement character must be a single character\n");
       printf("Enter replacement character: ");
+      fseek(stdin, 0, SEEK_END);
       count = 0;
       old_ch = 0;
       continue;
@@ -125,52 +133,45 @@ char *generate_s2(char *c) {
 
 char *strfilter(char *s1, char *s2, char c) {
   static char fs1[41];
-  static char *fs1_ptr = &fs1[0];
-  char *s1_ptr = &s1[0];
-  char *s2_ptr = &s2[0];
+  char *fs1_ptr = fs1;
+  char *s1_ptr = s1;
+  char *s2_ptr = s2;
+  char *fs1_ptr_start = fs1;
+  char *s1_ptr_start = s1;
   int s1_len = _strlen(s1);
   int s2_len = _strlen(s2);
   int fs1_len = s1_len;
 
-  /* copy contents of s1_ptr into fs1_ptr */
-  for (int i = 0; i < s1_len; i++) {
+  /* copy contents of s1 into fs1 */
+  for (int i = 0; i < s1_len; i++, s1_ptr++, fs1_ptr++) {
     *fs1_ptr = *s1_ptr;
-    (void)*(s1_ptr++);
-    (void)*(fs1_ptr++);
   }
-  /* shift fs1_ptr and s1_ptr to start */
-  for (int i = 0; i < s1_len; i++, (void)*(s1_ptr--), (void)*(fs1_ptr--))
-    ;
+  /* shift fs1_ptr and s1_ptr to start of array */
+  fs1_ptr = fs1_ptr_start;
+  s1_ptr = s1_ptr_start;
 
-  /* find occurences of s2_ptr in fs1_ptr and replace */
-  for (int i = 0; i < s2_len; i++) {
-    for (int j = 0; j < fs1_len; j++) {
+  /* find elements of s2 in fs1 then
+     replace elements found with c */
+  for (int i = 0; i < s2_len; i++, s2_ptr++) {
+    for (int j = 0; j < fs1_len; j++, fs1_ptr++) {
       if (*fs1_ptr == *s2_ptr) {
         *fs1_ptr = c;
       }
-      (void)*(fs1_ptr++);
     }
-    /* rewind fs1_ptr after every full loop of its contents */
-    for (int j = 0; j < fs1_len; j++, (void)*(fs1_ptr--))
-      ;
-    (void)*(s2_ptr++);
+    /* shift fs1_ptr to start of array after every
+       full loop of its contents */
+    fs1_ptr = fs1_ptr_start;
   }
-
-  /* shift s2_ptr to start */
-  for (int i = 0; i < s2_len; i++, (void)*(s2_ptr--))
-    ;
 
   return fs1;
 }
 
 int _strlen(char *str) {
-  char *ptr = &str[0];
-  int i = 0;
+  char *ptr = str;
   while (*ptr != '\0') {
-    i++;
-    (void)*(ptr++);
+    ptr++;
   }
-  return i;
+  return ptr - str;
 }
 /*
 Enter uppercase characters [A, Z]:
