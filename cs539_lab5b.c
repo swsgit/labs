@@ -172,7 +172,7 @@ int _strlen(char *str) {
     ptr++;
   }
   /* subtract the start of the memory address of str
-     from the adress that stores '\0' in str
+     from the address that stores '\0' in str
      to obtain its length as a string.
      Example:
          str           = 0x0001
