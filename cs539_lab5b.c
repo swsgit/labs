@@ -71,8 +71,8 @@ char *generate_s2(char *c) {
     if (ret == NULL) {
       exit(EXIT_FAILURE);
     }
-    fseek(stdin, 0, SEEK_END);
     s2_len = _strlen(s2);
+    fseek(stdin, 0, SEEK_END);
 
     /* find the newline character and replace it with null terminator */
     for (i = 0; i < s2_len; i++, ptr++) {
