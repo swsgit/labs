@@ -4,6 +4,7 @@
         Lab 4B
         Description: Replace the contents of a string
                      with the contents of another string.
+                     Using a replacement character.
         Compile: gcc main.c -O2 -Wall -Werror -std=gnu11 -o main
 */
 #include <stdio.h>
@@ -77,12 +78,13 @@ char *generate_s2(char *c) {
     /* check if string meets requirements:
        minimum 2 chars, max 20 chars, [A-Z] */
     len = _strlen(s2);
+    if (len < 2 || len > 20) {
+      printf("String length must be bewtween [2, 20]\n");
+      continue;
+    }
     i = 0;
     while (!done) {
-      if (len < 2 || len > 20) {
-        printf("String length must be bewtween [2, 20]\n");
-        break;
-      } else if (!VALID_INPUT(s2[i])) {
+      if (!VALID_INPUT(s2[i])) {
         printf("String must contain uppercase letters [A-Z]\n");
         break;
       } else if (i == len) {
