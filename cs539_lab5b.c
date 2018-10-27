@@ -81,19 +81,20 @@ char *generate_s2(char *c) {
         *ptr = '\0';
       }
     }
-    /* shift ptr back to the start of the array then
-       store the new length of s2 in s2_len */
+    /* shift ptr back to the start of the array */
     ptr = ptr_start;
-    s2_len = _strlen(s2);
 
     /* check if string meets requirements:
        minimum 2 chars, max 20 chars, [A-Z] */
+    s2_len = _strlen(s2);
+    if (s2_len < 2 || s2_len > 20) {
+      printf("String length must be bewtween [2, 20]\n");
+      ptr = ptr_start;
+      continue;
+    }
     i = 0;
     while (!done) {
-      if (s2_len < 2 || s2_len > 20) {
-        printf("String length must be bewtween [2, 20]\n");
-        break;
-      } else if (!VALID_INPUT(*ptr)) {
+      if (!VALID_INPUT(*ptr)) {
         printf("String must contain uppercase letters [A-Z]\n");
         break;
       } else if (i == s2_len) {
