@@ -14,18 +14,21 @@
 
 #define VALID_INPUT(x) ((x >= 'A' && x <= 'Z') || x == '\n' || x == '\0')
 
-char *generate_s1(void);
-char *generate_s2(char *c);
-char *strfilter(char s1[], char s2[], char c);
-int _strlen(char str[]);
+void generate_s1(char s1[]);
+void generate_s2(char s2[], char *c);
+void strfilter(char fs1[], char s1[], char s2[], char c);
+size_t _strlen(char str[]);
 
 int main(void) {
   char c;
-  char *s1 = generate_s1();
+  char s1[41];
+  char s2[23];
+  char fs1[41];
+  generate_s1(s1);
 
   for (;;) {
-    char *s2 = generate_s2(&c);
-    char *fs1 = strfilter(s1, s2, c);
+    generate_s2(s2, &c);
+    strfilter(fs1, s1, s2, c);
 
     printf("s1          = {\"%s\"}\n", s1);
     printf("s2          = {\"%s\"}\n", s2);
@@ -36,8 +39,7 @@ int main(void) {
   return 1;
 }
 
-char *generate_s1(void) {
-  static char s1[41];
+void generate_s1(char s1[]) {
   /* seed rand() so it produces unique results each run
      cast to unsigned int to avoid compiler warning */
   srand((unsigned int)time(NULL));
@@ -48,15 +50,12 @@ char *generate_s1(void) {
   }
   /* finalize the string a with null terminator */
   s1[40] = '\0';
-
-  return s1;
 }
 
-char *generate_s2(char *c) {
-  static char s2[23];
+void generate_s2(char s2[], char *c) {
   bool done = false;
-  int len;
-  int i;
+  size_t len;
+  size_t i;
   int ch;
   int count = 0;
   int old_ch = 0;
@@ -64,13 +63,13 @@ char *generate_s2(char *c) {
   while (!done) {
     /* get s2 from user then clear stdin */
     printf("Enter uppercase characters [A, Z]: ");
-    char *ret = fgets(s2, sizeof s2, stdin);
+    char *ret = fgets(s2, 23, stdin);
     if (ret == NULL) {
       exit(EXIT_FAILURE);
     }
     fseek(stdin, 0, SEEK_END);
     /* find newline character and replace it with null terminator */
-    for (i = 0; i < sizeof s2; i++) {
+    for (i = 0; i < 23; i++) {
       if (s2[i] == '\n') {
         s2[i] = '\0';
       }
@@ -115,34 +114,29 @@ char *generate_s2(char *c) {
     old_ch = ch;
   }
   fseek(stdin, 0, SEEK_END);
-  return s2;
 }
 
-char *strfilter(char s1[], char s2[], char c) {
-  static char fs1[41];
-  int s1_len = _strlen(s1);
-  int s2_len = _strlen(s2);
-  int fs1_len;
+void strfilter(char fs1[], char s1[], char s2[], char c) {
+  size_t s1_len = _strlen(s1);
+  size_t s2_len = _strlen(s2);
+  size_t fs1_len = s1_len;
 
-  /* copy contents of s1 into str */
-  for (int i = 0; i < s1_len; i++) {
+  /* copy contents of s1 into fs1 */
+  for (size_t i = 0; i < s1_len; i++) {
     fs1[i] = s1[i];
   }
 
-  fs1_len = _strlen(fs1);
-  for (int i = 0; i < s2_len; i++) {
-    for (int j = 0; j < fs1_len; j++) {
+  for (size_t i = 0; i < s2_len; i++) {
+    for (size_t j = 0; j < fs1_len; j++) {
       if (fs1[j] == s2[i]) {
         fs1[j] = c;
       }
     }
   }
-
-  return fs1;
 }
 
-int _strlen(char str[]) {
-  int i = 0;
+size_t _strlen(char str[]) {
+  size_t i = 0;
   while (str[i] != '\0')
     i++;
   return i;
