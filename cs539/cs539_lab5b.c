@@ -14,52 +14,54 @@
 
 #define VALID_INPUT(x) ((x >= 'A' && x <= 'Z') || x == '\0')
 
-char *generate_s1(void);
-char *generate_s2(char *c);
-char *strfilter(char *s1, char *s2, char c);
-int _strlen(char *str);
+void generate_s1(char *s1);
+void generate_s2(char *s2, char *c);
+void strfilter(char *fs1, char *s1, char *s2, char c);
+size_t _strlen(char *str);
 
 int main(void) {
   char c;
-  char *s1 = generate_s1();
+  char *s1 = calloc(41, sizeof(*s1));
+  char *s2 = calloc(23, sizeof(*s2));
+
+  generate_s1(s1);
 
   for (;;) {
-    char *s2 = generate_s2(&c);
-    char *fs1 = strfilter(s1, s2, c);
+    generate_s2(s2, &c);
+
+    char *fs1 = calloc(41, sizeof(*fs1));
+    strfilter(fs1, s1, s2, c);
 
     printf("s1          = {\"%s\"}\n", s1);
     printf("s2          = {\"%s\"}\n", s2);
     printf("c           = {\"%c\"}\n", c);
     printf("filtered s1 = {\"%s\"}\n", fs1);
+    free(fs1);
   }
+  free(s1);
+  free(s2);
 
   return 1;
 }
 
-char *generate_s1(void) {
-  static char s1[41];
-  char *ptr = s1;
+void generate_s1(char *s1) {
   /* seed rand() so it produces unique results each run,
      cast to unsigned int to avoid compiler warning */
   srand((unsigned int)time(NULL));
-  for (int i = 0; i < 40; i++, ptr++) {
+  for (int i = 0; i < 40; i++, s1++) {
     /* return random number between [M, N]
        M + rand() / (RAND_MAX / (N - M + 1) + 1) */
-    *ptr = 65 + rand() / (RAND_MAX / (90 - 65 + 1) + 1);
+    *s1 = 65 + rand() / (RAND_MAX / (90 - 65 + 1) + 1);
   }
   /* finalize the string a with null terminator */
-  *ptr = '\0';
-
-  return s1;
+  *s1 = '\0';
 }
 
-char *generate_s2(char *c) {
-  static char s2[23];
-  char *ptr = s2;
-  char *ptr_start = s2;
+void generate_s2(char *s2, char *c) {
+  char *s2_start = s2;
   bool done = false;
-  int s2_len;
-  int i;
+  size_t s2_len;
+  size_t i;
   int ch;
   int old_ch = '\n';
   int count = 0;
@@ -68,7 +70,7 @@ char *generate_s2(char *c) {
     /* get s2 from the user and store its
        length in s2_len then clear stdin */
     printf("Enter uppercase characters [A, Z]: ");
-    char *ret = fgets(s2, sizeof s2, stdin);
+    char *ret = fgets(s2, 23, stdin);
     if (ret == NULL) {
       exit(EXIT_FAILURE);
     }
@@ -76,37 +78,37 @@ char *generate_s2(char *c) {
     s2_len = _strlen(s2);
 
     /* find the newline character and replace it with null terminator */
-    for (i = 0; i < s2_len; i++, ptr++) {
-      if (*ptr == '\n') {
-        *ptr = '\0';
+    for (i = 0; i < s2_len; i++, s2++) {
+      if (*s2 == '\n') {
+        *s2 = '\0';
       }
     }
-    /* shift ptr back to the start of the array */
-    ptr = ptr_start;
+    /* shift s2 back to the start of the array */
+    s2 = s2_start;
 
     /* check if string meets requirements:
        minimum 2 chars, max 20 chars, [A-Z] */
     s2_len = _strlen(s2);
     if (s2_len < 2 || s2_len > 20) {
       printf("String length must be bewtween [2, 20]\n");
-      ptr = ptr_start;
+      s2 = s2_start;
       continue;
     }
     i = 0;
     while (!done) {
-      if (!VALID_INPUT(*ptr)) {
+      if (!VALID_INPUT(*s2)) {
         printf("String must contain uppercase letters [A-Z]\n");
         break;
       } else if (i == s2_len) {
         done = true;
         break;
       }
-      ptr++;
+      s2++;
       i++;
     }
-    /* shift ptr to the start of the
+    /* shift s2 to the start of the
        array incase input was invalid */
-    ptr = ptr_start;
+    s2 = s2_start;
   }
 
   /* get replacement character from stdin,
@@ -129,57 +131,50 @@ char *generate_s2(char *c) {
     old_ch = ch;
   }
   fseek(stdin, 0, SEEK_END);
-
-  return s2;
 }
 
-char *strfilter(char *s1, char *s2, char c) {
-  static char fs1[41];
-  char *fs1_ptr = fs1;
-  char *s1_ptr = s1;
-  char *s2_ptr = s2;
-  char *fs1_ptr_start = fs1;
-  char *s1_ptr_start = s1;
-  int s1_len = _strlen(s1);
-  int s2_len = _strlen(s2);
-  int fs1_len = s1_len;
+void strfilter(char *fs1, char *s1, char *s2, char c) {
+  char *fs1_start = fs1;
+  char *s1_start = s1;
+  size_t s1_len = _strlen(s1);
+  size_t s2_len = _strlen(s2);
+  size_t fs1_len = s1_len;
 
   /* copy contents of s1 into fs1 */
-  for (int i = 0; i < s1_len; i++, s1_ptr++, fs1_ptr++) {
-    *fs1_ptr = *s1_ptr;
+  for (size_t i = 0; i < s1_len; i++, s1++, fs1++) {
+    *fs1 = *s1;
   }
-  /* shift fs1_ptr and s1_ptr to start of array */
-  fs1_ptr = fs1_ptr_start;
-  s1_ptr = s1_ptr_start;
+  /* shift fs1 and s1 to start of array */
+  fs1 = fs1_start;
+  s1 = s1_start;
 
   /* find elements of s2 in fs1 then
      replace elements found with c */
-  for (int i = 0; i < s2_len; i++, s2_ptr++) {
-    for (int j = 0; j < fs1_len; j++, fs1_ptr++) {
-      if (*fs1_ptr == *s2_ptr) {
-        *fs1_ptr = c;
+  for (size_t i = 0; i < s2_len; i++, s2++) {
+    for (size_t j = 0; j < fs1_len; j++, fs1++) {
+      if (*fs1 == *s2) {
+        *fs1 = c;
       }
     }
-    /* shift fs1_ptr to start of array after every
+    /* shift fs1 to start of array after every
        full loop of its contents */
-    fs1_ptr = fs1_ptr_start;
+    fs1 = fs1_start;
   }
-
-  return fs1;
+  fs1 = fs1_start;
 }
 
-int _strlen(char *str) {
+size_t _strlen(char *str) {
   char *ptr = str;
   while (*ptr != '\0') {
     ptr++;
   }
   /* subtract the start of the memory address of str
-     from the adress that stores '\0' in str
+     from the address that stores '\0' in str
      to obtain its length as a string. 
      Example: 
          str           = 0x0001
          str+5         = 0x0006 ('\0' is stored at 0x0006)
-        (str+5) - str  = 0x0005 ((int)"\x05" == 5) */
+        (str+5) - str  = 0x0005 ((int)0x0005 == 5) */
   return ptr - str;
 }
 /*
