@@ -24,8 +24,9 @@ int main(void) {
   char s1[41];
   char s2[23];
   char fs1[41];
-  generate_s1(s1);
 
+  generate_s1(s1);
+  
   for (;;) {
     generate_s2(s2, &c);
     strfilter(fs1, s1, s2, c);
