@@ -170,8 +170,8 @@ size_t _strlen(char *str) {
   }
   /* subtract the start of the memory address of str
      from the address that stores '\0' in str
-     to obtain its length as a string. 
-     Example: 
+     to obtain its length as a string.
+     Example:
          str           = 0x0001
          str+5         = 0x0006 ('\0' is stored at 0x0006)
         (str+5) - str  = 0x0005 ((int)0x0005 == 5) */
