@@ -2,7 +2,8 @@
         Stone, Spencer
         11/26/18
         Lab 6B & 7B
-        Description: Sort a list of contacts in ascending order.
+        Description: Sort a list of contacts by zip code 
+                     in ascending order.
 */
 #include <stdio.h>
 #include <stdlib.h>
