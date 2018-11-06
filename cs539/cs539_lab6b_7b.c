@@ -3,7 +3,6 @@
         11/26/18
         Lab 6B & 7B
         Description: Sort a list of contacts in ascending order.
-        Compile: gcc cs539_lab6b_7b.c -O2 -Wall -Werror -std=gnu11 -o cs539_lab6b_7b
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -25,7 +24,8 @@ int main(void) {
   size_t size;
   contact *c = init_contacts(50);
   size = get_contacts(c);
-  if (size == 0) perror("get_contacts failed");
+  if (size == 0)
+    perror("get_contacts failed");
   sort_contacts(c, size);
   print_contacts(c, size);
   free(c);
@@ -37,7 +37,8 @@ int main(void) {
    Then return a pointer to the array */
 contact *init_contacts(size_t n) {
   contact *c = malloc(n * sizeof(*c));
-  if (c == NULL) perror("Malloc failed");
+  if (c == NULL)
+    perror("Malloc failed");
   return c;
 }
 
@@ -59,11 +60,12 @@ size_t get_contacts(contact *c) {
     ret = fgets(c->locale, 50, stdin);
     ret = fgets(zip, sizeof(zip), stdin);
     c->zip = atoi(zip);
-    if (feof(stdin)) break;
+    if (feof(stdin))
+      break;
   }
   c = c_start;
   c = realloc(c, size * sizeof(*c));
-  
+
   return c ? size : 0;
 }
 
@@ -88,7 +90,7 @@ void sort_contacts(contact *c, size_t n) {
   }
 }
 
-/* 
+/*
 cs539> cs539_lab6b_7b.exe < address.txt > address_sorted.txt
 --------------------- address.txt ---------------------
 A1, A2
