@@ -2,69 +2,72 @@
         Stone, Spencer
         11/26/18
         Lab 6B & 7B
-        Description: Sort a list of contacts by zip code 
+        Description: Sort a list of contacts by zip code
                      in ascending order.
 */
 #include <stdio.h>
 #include <stdlib.h>
 
+#define MAX_CONTACTS 50
+#define MAX_BUF 50
+
 typedef struct {
-  char name[50];
-  char address[50];
-  char locale[50];
+  char name[MAX_BUF];
+  char address[MAX_BUF];
+  char locale[MAX_BUF];
   unsigned int zip;
 } contact;
 
-contact *init_contacts(size_t n);
-size_t get_contacts(contact *c);
-void print_contacts(contact *c, size_t size);
-void sort_contacts(contact *c, size_t n);
+contact **alloc_contacts(size_t n);
+size_t get_contacts(contact **c);
+void print_contacts(contact **c, size_t size);
+void sort_contacts(contact **c, size_t n);
 void swap(contact *a, contact *b);
+void free_alloc(contact **c, size_t size);
 
 int main(void) {
   size_t size;
-  contact *c = init_contacts(50);
+  contact **c = alloc_contacts(MAX_CONTACTS);
   size = get_contacts(c);
   if (size == 0)
     perror("get_contacts failed");
   sort_contacts(c, size);
   print_contacts(c, size);
-  free(c);
+  free_alloc(c, size);
 
   return 1;
 }
 
 /* Allocate space for n number of contacts.
    Then return a pointer to the array */
-contact *init_contacts(size_t n) {
-  contact *c = malloc(n * sizeof(*c));
+contact **alloc_contacts(size_t n) {
+  contact **c = malloc(n * sizeof(contact *));
   if (c == NULL)
     perror("Malloc failed");
+
   return c;
 }
 
-/* Loop over contact array printing each contact element */
-void print_contacts(contact *c, size_t size) {
-  for (size_t i = 0; i < size; i++, c++)
-    printf("%s%s%s%d\n", c->name, c->address, c->locale, c->zip);
-}
-
 /* Populate contact array with values from stdin */
-size_t get_contacts(contact *c) {
+size_t get_contacts(contact **c) {
   char *ret;
-  contact *c_start = c;
   char zip[64];
   size_t size = 0;
-  for (size_t i = 0; i < 50; i++, size++, c++) {
-    ret = fgets(c->name, 50, stdin);
-    ret = fgets(c->address, 50, stdin);
-    ret = fgets(c->locale, 50, stdin);
+  for (size_t i = 0; i < MAX_CONTACTS; i++, size++) {
+    /* allocate contact struct as needed */
+    c[i] = malloc(sizeof(contact));
+    if (c[i] == NULL) {
+      perror("Malloc failed");
+    }
+    ret = fgets(c[i]->name, MAX_BUF, stdin);
+    ret = fgets(c[i]->address, MAX_BUF, stdin);
+    ret = fgets(c[i]->locale, MAX_BUF, stdin);
     ret = fgets(zip, sizeof(zip), stdin);
-    c->zip = atoi(zip);
+    c[i]->zip = atoi(zip);
     if (feof(stdin))
       break;
   }
-  c = c_start;
+  /* resize pointer array to the amount of stored contacts */
   c = realloc(c, size * sizeof(*c));
 
   return c ? size : 0;
@@ -77,18 +80,31 @@ void swap(contact *a, contact *b) {
 }
 
 /* Bubble sort O(n^2) */
-void sort_contacts(contact *c, size_t n) {
+void sort_contacts(contact **c, size_t n) {
   int i, j = n, s = 1;
   while (s) {
     s = 0;
     for (i = 1; i < j; i++) {
-      if ((c + i)->zip < ((c + i) - 1)->zip) {
-        swap(c + i, (c + i) - 1);
+      if (c[i]->zip < c[i - 1]->zip) {
+        swap(c[i], c[i - 1]);
         s = 1;
       }
     }
     j--;
   }
+}
+
+/* Loop over contact array printing each contact element */
+void print_contacts(contact **c, size_t size) {
+  for (size_t i = 0; i < size; i++)
+    printf("%s%s%s%d\n", c[i]->name, c[i]->address, c[i]->locale, c[i]->zip);
+}
+
+void free_alloc(contact **c, size_t size) {
+  for (size_t i = 0; i < size; i++) {
+    free(c[i]);
+  }
+  free(c);
 }
 
 /*
