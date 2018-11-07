@@ -55,19 +55,17 @@ size_t get_contacts(contact **c) {
   for (size_t i = 0; i < MAX_CONTACTS; i++, size++) {
     /* allocate contact struct as needed */
     c[i] = malloc(sizeof(contact));
-    if (c[i] == NULL) {
+    if (c[i] == NULL)
       perror("Malloc failed");
-    }
     fgets(c[i]->name, MAX_BUF, stdin);
     fgets(c[i]->address, MAX_BUF, stdin);
     fgets(c[i]->locale, MAX_BUF, stdin);
     fgets(zip, sizeof(zip), stdin);
     c[i]->zip = atoi(zip);
+    /* if EOF reached, break loop to avoid more allocs */
     if (feof(stdin))
       break;
   }
-  /* resize pointer array to the amount of stored contacts */
-  c = realloc(c, size * sizeof(*c));
 
   return c ? size : 0;
 }
