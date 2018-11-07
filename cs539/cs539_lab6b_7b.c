@@ -50,7 +50,6 @@ contact **alloc_contacts(size_t n) {
 
 /* Populate contact array with values from stdin */
 size_t get_contacts(contact **c) {
-  char *ret;
   char zip[64];
   size_t size = 0;
   for (size_t i = 0; i < MAX_CONTACTS; i++, size++) {
@@ -59,10 +58,10 @@ size_t get_contacts(contact **c) {
     if (c[i] == NULL) {
       perror("Malloc failed");
     }
-    ret = fgets(c[i]->name, MAX_BUF, stdin);
-    ret = fgets(c[i]->address, MAX_BUF, stdin);
-    ret = fgets(c[i]->locale, MAX_BUF, stdin);
-    ret = fgets(zip, sizeof(zip), stdin);
+    fgets(c[i]->name, MAX_BUF, stdin);
+    fgets(c[i]->address, MAX_BUF, stdin);
+    fgets(c[i]->locale, MAX_BUF, stdin);
+    fgets(zip, sizeof(zip), stdin);
     c[i]->zip = atoi(zip);
     if (feof(stdin))
       break;
