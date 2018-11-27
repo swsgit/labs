@@ -7,10 +7,10 @@
                      Using a replacement character.
         Compile: gcc main.c -O2 -Wall -Werror -std=gnu11 -o main
 */
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <stdbool.h>
 
 #define VALID_INPUT(x) ((x >= 'A' && x <= 'Z') || x == '\n' || x == '\0')
 
@@ -26,7 +26,7 @@ int main(void) {
   char fs1[41];
 
   generate_s1(s1);
-  
+
   for (;;) {
     generate_s2(s2, &c);
     strfilter(fs1, s1, s2, c);

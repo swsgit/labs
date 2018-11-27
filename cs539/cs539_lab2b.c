@@ -9,24 +9,24 @@ Lab 2B
 #define IN_RANGE(x) ((x >= 65 && x <= 90) || (x >= 97 && x <= 122))
 
 int main(void) {
-	int ch;
-	int old_ch = 0;
-	while ((ch = getchar()) != EOF) {
-		/* [A-Z] = [65, 90] 
-		   [a-z] = [97, 122] 
-		*/
-		if (IN_RANGE(ch)) {
-			putchar(ch);
-		} else if (!IN_RANGE(ch) && IN_RANGE(old_ch)) {
-			putchar('\n');
-		}
-		old_ch = ch;
-	}
-	return 1;
+  int ch;
+  int old_ch = 0;
+  while ((ch = getchar()) != EOF) {
+    /* [A-Z] = [65, 90]
+       [a-z] = [97, 122]
+    */
+    if (IN_RANGE(ch)) {
+      putchar(ch);
+    } else if (!IN_RANGE(ch) && IN_RANGE(old_ch)) {
+      putchar('\n');
+    }
+    old_ch = ch;
+  }
+  return 1;
 }
 /*
 lab2b_poem.txt:
-	The Parsnip
+        The Parsnip
 
 
 The parsnip, children, I repeat,
