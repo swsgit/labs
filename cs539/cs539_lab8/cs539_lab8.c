@@ -1,7 +1,7 @@
 /*
         Stone, Spencer
         11/26/18
-        Lab 6B & 7B
+        Lab 8
         Description: Sort a list of contacts by zip code
                      in ascending order.
 */
