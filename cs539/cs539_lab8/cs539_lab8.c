@@ -54,7 +54,7 @@ int main(int argc, char **argv) {
 }
 
 /*
-cs539> cs539_lab6b_7b.exe address.txt address_sorted.txt
+cs539> cs539_lab8.exe address.txt address_sorted.txt
 --------------------- address.txt ---------------------
 A1, A2
 20294 Lorenzana Dr
