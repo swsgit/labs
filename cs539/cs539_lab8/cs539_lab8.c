@@ -20,12 +20,14 @@ int main(int argc, char **argv) {
   }
 
   err = fopen_s(&fp_in, argv[1], "r");
-  if (err != 0) {
-    perror("Failed opening file for reading");
+  if (err) {
+    perror("fopen() failed");
+    return EXIT_FAILURE;
   }
   err = fopen_s(&fp_out, argv[2], "w+");
-  if (err != 0) {
-    perror("Failed opening file for writing");
+  if (err) {
+    perror("fopen() failed");
+    return EXIT_FAILURE;
   }
 
   contact **c = alloc_contacts(MAX_CONTACTS);
@@ -38,19 +40,21 @@ int main(int argc, char **argv) {
 
   if (fp_in) {
     err = fclose(fp_in);
-    if (err != 0) {
-      perror("File could not be closed");
+    if (err) {
+      perror("fclose() failed");
+      return EXIT_FAILURE;
     }
   }
 
   if (fp_out) {
     err = fclose(fp_out);
-    if (err != 0) {
-      perror("File could not be closed");
+    if (err) {
+      perror("fclose() failed");
+      return EXIT_FAILURE;
     }
   }
 
-  return 1;
+  return EXIT_SUCCESS;
 }
 
 /*
