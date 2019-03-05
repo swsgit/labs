@@ -113,10 +113,20 @@ int main() {
   cout << "Printing stack...\n";
   stack.Print();
 
-  system("pause");
-
   return 0;
 }
 /*
-
+Printing stack...
+10
+20
+30
+Popping stack: 30
+Popping stack: 20
+Popping stack: 60
+Popping stack: 50
+Printing stack...
+10
+40
+Deleting stack
+Printing stack...
 */
