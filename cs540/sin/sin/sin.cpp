@@ -1,3 +1,6 @@
+// Spencer Stone
+// CS540
+// 3/4/19
 #include <iostream>
 #include <math.h>
 
@@ -21,6 +24,8 @@ int main() {
   constexpr auto PI = 3.14159265358979323846;
   printf("%f\n", _sin(PI));
 
-  system("pause");
   return 0;
 }
+/*
+0.000021
+*/

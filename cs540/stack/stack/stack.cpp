@@ -1,4 +1,6 @@
 // Spencer Stone
+// CS540
+// 3/4/19
 #include <iostream>
 
 using namespace std;
@@ -99,7 +101,20 @@ int main() {
   cout << "Printing stack...\n";
   PrintStack(head);
 
-  system("pause");
-
   return 0;
 }
+/*
+Printing stack...
+10
+20
+30
+Popping stack: 30
+Popping stack: 20
+Popping stack: 10
+Printing stack...
+40
+50
+60
+Deleting stack...
+Printing stack...
+*/
